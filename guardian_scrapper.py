@@ -4,8 +4,11 @@ from csv import writer
 import time
 
 
+localtime = time.localtime()
+tobe_added = time.strftime("%I_%M_%S_%p", localtime)
+name= "guardian_news_" + str(tobe_added) +".csv"
 
-with open('guardian_news.csv','w',encoding='utf8',newline='') as f:
+with open(name,'w',encoding='utf8',newline='') as f:
     thewriter = writer(f)
     header = ["Title","URL"]
     thewriter.writerow(header)
@@ -21,5 +24,3 @@ with open('guardian_news.csv','w',encoding='utf8',newline='') as f:
         thewriter.writerow(data)
 print("Scrapped Successfully")
 
-
-        
