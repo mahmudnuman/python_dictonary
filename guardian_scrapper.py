@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 from csv import writer
 from datetime import datetime
+import time
+
 
 now = datetime.now() # current date and time
 tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")

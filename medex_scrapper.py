@@ -2,8 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 from csv import writer
 from datetime import datetime
+import time
 
-page =30000
+page =734
 
 
 now = datetime.now() # current date and time
@@ -17,8 +18,9 @@ with open(name,'w',encoding='utf8',newline='') as f:
     for p in range(1,page):
 
 
-      
+        
         url = "https://medex.com.bd/brands?page=" +str(p)
+        time.sleep(5)
 
         page = requests.get(url)
         soup = BeautifulSoup(page.content,'html.parser')
@@ -26,12 +28,11 @@ with open(name,'w',encoding='utf8',newline='') as f:
         for list in lists:
             brand_name = list.find('div',class_="data-row-top").text.replace('\n', '')
             power = list.find('span',class_="grey-ligten").text.replace('\n', '')
-           # generics = list.find('div',class_="col-xs-12").text.replace('\n', '')
+           #generics = list.find('div',class_="col-xs-12").text.replace('\n', '')
             manufacturer = list.find('span',class_="data-row-company").text.replace('\n', '')
             price = list.find('span',class_="package-pricing").text.replace('\n', '')
             info = [brand_name,power,manufacturer,price]
             thewriter.writerow(info )
-            #time.sleep(30)
             
             
             
