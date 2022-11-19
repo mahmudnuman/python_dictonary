@@ -6,7 +6,7 @@ import time
 
 page =30000
 
-#this scrapper is incomplete
+#this scrapper is incomplete, this comment will be removed when tested and done
 
 
 now = datetime.now() # current date and time
