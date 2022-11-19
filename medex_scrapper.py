@@ -1,13 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
 from csv import writer
-import time
+from datetime import datetime
 
 page =30000
 
 
+now = datetime.now() # current date and time
+tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
+name= "medex_medicine_informations" + str(tobe_added) +".csv"
 
-with open('medex_medicine_informations.csv','w',encoding='utf8',newline='') as f:
+with open(name,'w',encoding='utf8',newline='') as f:
     thewriter = writer(f)
     header = ["Brand Name","Power","Manufacturer","Unit Price"]
     thewriter.writerow(header)
@@ -19,10 +22,7 @@ with open('medex_medicine_informations.csv','w',encoding='utf8',newline='') as f
 
         page = requests.get(url)
         soup = BeautifulSoup(page.content,'html.parser')
-        print(soup)
-        exit
         lists = soup.find_all('a',class_="hoverable-block")
-        print(len(lists))
         for list in lists:
             brand_name = list.find('div',class_="data-row-top").text.replace('\n', '')
             power = list.find('span',class_="grey-ligten").text.replace('\n', '')

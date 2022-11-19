@@ -1,13 +1,21 @@
 from bs4 import BeautifulSoup
 import requests
 from csv import writer
+from datetime import datetime
 
+
+
+
+now = datetime.now() # current date and time
+tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
+name= "mini_scrappy_housing" + str(tobe_added) +".csv"
 
 url="https://www.pararius.com/apartments/amsterdam?ac=1"
 page=requests.get(url)
 soup=BeautifulSoup(page.content,'html.parser')
 lists=soup.find_all('section',class_="listing-search-item")
-with open('mini_scrappy_housing.csv','w',encoding='utf8',newline='') as f:
+
+with open(name,'w',encoding='utf8',newline='') as f:
     thewriter = writer(f)
     header = ["Title","Location","Price","Area","Room"]
     thewriter.writerow(header)

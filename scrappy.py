@@ -1,13 +1,17 @@
 from bs4 import BeautifulSoup
 import requests
 from csv import writer
+from datetime import datetime
 
 
 page =30
 
 
 
-with open('amsterdam_housing.csv','w',encoding='utf8',newline='') as f:
+now = datetime.now() # current date and time
+tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
+name= "amsterdam_housing" + str(tobe_added) +".csv"
+with open(name,'w',encoding='utf8',newline='') as f:
     thewriter = writer(f)
     header = ["Title","Location","Price","Area","Room"]
     thewriter.writerow(header)

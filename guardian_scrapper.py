@@ -1,13 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 from csv import writer
-import time
+from datetime import datetime
 
-
-localtime = time.localtime()
-tobe_added = time.strftime("%I_%M_%S_%p", localtime)
+now = datetime.now() # current date and time
+tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
 name= "guardian_news_" + str(tobe_added) +".csv"
-
 with open(name,'w',encoding='utf8',newline='') as f:
     thewriter = writer(f)
     header = ["Title","URL"]
