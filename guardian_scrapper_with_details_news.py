@@ -27,6 +27,7 @@ with open(name,'w',encoding='utf-8',newline='') as f:
         link=list.find('a',class_="fc-item__link")["href"]
         
         if validators.url(link):
+            time.sleep(5)
             page=requests.get(link)
             soup=BeautifulSoup(page.content,"html.parser")
             details=soup.find_all('p',class_="dcr-2v2zi4")
@@ -34,7 +35,6 @@ with open(name,'w',encoding='utf-8',newline='') as f:
             
             for detail in details:
                 detail_news +=  detail.text
-                time.sleep(20)
                 
 
 
