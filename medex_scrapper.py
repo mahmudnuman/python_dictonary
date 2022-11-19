@@ -18,9 +18,9 @@ with open(name,'w',encoding='utf8',newline='') as f:
     for p in range(1,page):
 
 
-        
-        url = "https://medex.com.bd/brands?page=" +str(p)
         time.sleep(5)
+
+        url = "https://medex.com.bd/brands?page=" +str(p)
 
         page = requests.get(url)
         soup = BeautifulSoup(page.content,'html.parser')
