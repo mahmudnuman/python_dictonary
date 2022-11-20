@@ -23,7 +23,7 @@ with open(name,'w',encoding='utf-8',newline='') as f:
     lists=soup.find_all('h3',class_="fc-item__title")
 
     for list in lists:
-        title=list.find('span',class_="js-headline-text").text
+        title=list.find('span',class_="js-headline-text").text.strip()
         link=list.find('a',class_="fc-item__link")["href"]
         
         if validators.url(link):
