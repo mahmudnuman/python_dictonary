@@ -5,7 +5,7 @@ from datetime import datetime
 import time
 import random
 
-page =10
+page =11
 
 
 
@@ -27,11 +27,11 @@ with open(name,'w',encoding='utf8',newline='') as f:
         soup = BeautifulSoup(page.content,'html.parser')   
         lists = soup.find_all('a',class_="hoverable-block")    
         for list in lists:            
-            brand_name = list.find('div',class_="data-row-top").get_text
-            power = list.find('span',class_="grey-ligten").get_text
+            brand_name = list.find('div',class_="data-row-top").text.strip()
+            power = list.find('span',class_="grey-ligten").text.strip()
             link = list['href']
-            manufacturer = list.find('span',class_="data-row-company").get_text
-            price = list.find('span',class_="package-pricing").get_text
+            manufacturer = list.find('span',class_="data-row-company").text.strip()
+            price = list.find('span',class_="package-pricing").text.strip() 
             info = [brand_name,power,link,manufacturer,price]
             thewriter.writerow(info )
             
