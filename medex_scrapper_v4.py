@@ -5,6 +5,8 @@ from datetime import datetime
 import validators
 import time
 import random
+import json
+
 
 page =2
 
@@ -12,26 +14,27 @@ page =2
 
 now = datetime.now() # current date and time
 tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
-name= "medex_medicine_info_with_generic_url_" + str(tobe_added) +".csv"
+name= "medex_medicine_info_with_generic_url_" + str(tobe_added) +".json"
 
-with open(name,'w',encoding='utf8',newline='') as f:
+with open(name,'w',encoding='utf-8') as f:
     thewriter = writer(f)
-    header = [
-              "Generic Name",
-              "URL",
-              "Indications",
-              "Pharmacology",
-              "Dosage",
-              "Administration",
-              "Interaction",
-              "Contradictions",
-              "Side Effects",
-              "Pregnancy & Lactation",
-              "Precautions & Warning",
-              "Therapeutic Class",
-              "Storage Condtions"
-              ]
-    thewriter.writerow(header)
+    # header = [
+    #           "Generic Name",
+    #           "URL",
+    #           "Indications",
+    #           "Pharmacology",
+    #           "Dosage",
+    #           "Administration",
+    #           "Interaction",
+    #           "Contradictions",
+    #           "Side Effects",
+    #           "Pregnancy & Lactation",
+    #           "Precautions & Warning",
+    #           "Therapeutic Class",
+    #           "Storage Condtions"
+    #           ]
+    # thewriter.writerow(header)
+
     for p in range(1,page):
         num = random.randint(6, 10)
 
@@ -40,55 +43,25 @@ with open(name,'w',encoding='utf8',newline='') as f:
         url = "https://medex.com.bd/generics?page=" +str(p)
         page = requests.get(url,headers=headers)
         soup = BeautifulSoup(page.content,'html.parser')   
-        lists = soup.find_all('a',class_="hoverable-block")    
+        lists = soup.find_all('a',class_="hoverable-block")  
+        data = {}  
         for list in lists:            
             generic_name = list.find('div',class_="dcind-title").text.strip()
             link = list['href']
             if validators.url(link):
-                time.sleep(7)
-                details_page = requests.get(link,headers=headers)
-                details_soup = BeautifulSoup(details_page.content,'html.parser')   
-                detail_lists = details_soup.find_all('div',class_="ac-body")
-                print(detail_lists)
-                print(len(detail_lists))
-                for i in range(len(detail_lists)):
-                     print (i, end = " ")
-                # exit()
-                # indications = detail_lists[0].text.strip()
-                # pharmacology = detail_lists[1].text.strip()
-                # dosage = detail_lists[2].text.strip()
-                # administration = detail_lists[3].text.strip()
-                # interaction = detail_lists[4].text.strip()
-                # contradictions = detail_lists[5].text.strip()
-                # side_effects = detail_lists[6].text.strip()
-                # pregnancy_and_lactation = detail_lists[7].text.strip()
-                # precautions_and_Warning = detail_lists[8].text.strip()
-                # therapeutic_class = detail_lists[9].text.strip()
-                # storage_condtions = detail_lists[10].text.strip()
-                
-                # print(generic_name)
-                # print(link)
-                # exit()
-                continue
-                info = [
-                        generic_name,
-                        link,
-                        indications,
-                        pharmacology,
-                        dosage,
-                        administration,
-                        interaction,
-                        contradictions,
-                        side_effects,
-                        pregnancy_and_lactation,
-                        precautions_and_Warning,
-                        therapeutic_class,
-                        storage_condtions
-                        ]
-                
-                thewriter.writerow(info )
-            
-            
-exit()
+                    time.sleep(7)
+                    details_page = requests.get(link,headers=headers)
+                    details_soup = BeautifulSoup(details_page.content,'html.parser')   
+                    detail_lists = details_soup.find_all('div',class_="ac-body")
+                    header_lists = details_soup.find_all('h4',class_="ac-header")
+                    data['name'] = generic_name
+                    data['link'] = link
+                    for detail,header in zip(detail_lists,header_lists):
+                        head = header.text.strip()
+                        det = detail.text.strip()
+                        data[head]=det
+                    json_data = json.dumps(data)        
+            thewriter.writerow(json_data )
+      
             
 print("Scrapped Successfully")
