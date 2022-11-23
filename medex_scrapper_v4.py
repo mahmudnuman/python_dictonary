@@ -15,9 +15,8 @@ page =2
 now = datetime.now() # current date and time
 tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
 name= "medex_medicine_info_with_generic_url_" + str(tobe_added) +".json"
-
+json_data={}
 with open(name,'w',encoding='utf-8') as f:
-    thewriter = writer(f)
     # header = [
     #           "Generic Name",
     #           "URL",
@@ -34,6 +33,7 @@ with open(name,'w',encoding='utf-8') as f:
     #           "Storage Condtions"
     #           ]
     # thewriter.writerow(header)
+    data = {}
 
     for p in range(1,page):
         num = random.randint(6, 10)
@@ -44,7 +44,6 @@ with open(name,'w',encoding='utf-8') as f:
         page = requests.get(url,headers=headers)
         soup = BeautifulSoup(page.content,'html.parser')   
         lists = soup.find_all('a',class_="hoverable-block")  
-        data = {}  
         for list in lists:            
             generic_name = list.find('div',class_="dcind-title").text.strip()
             link = list['href']
@@ -60,8 +59,14 @@ with open(name,'w',encoding='utf-8') as f:
                         head = header.text.strip()
                         det = detail.text.strip()
                         data[head]=det
-                    json_data = json.dumps(data)        
-            thewriter.writerow(json_data )
-      
+                    json_data.update(data)
+
+
+print (type(json_data))
+                           
+print (json_data)
+
+# f.write(json_data)
+     
             
 print("Scrapped Successfully")
