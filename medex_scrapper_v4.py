@@ -60,13 +60,11 @@ with open(name,'w',encoding='utf-8') as f:
                         det = detail.text.strip()
                         data[head]=det
                     json_data.update(data)
-
-
-print (type(json_data))
+            f.write(json_data)
+            print (json_data)
                            
-print (json_data)
+# print (json_data)
 
-# f.write(json_data)
      
             
 print("Scrapped Successfully")
