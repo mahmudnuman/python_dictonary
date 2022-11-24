@@ -6,9 +6,10 @@ import validators
 import time
 import random
 import json
+import pandas as pd
 
 
-page =85
+page =3
 
 #https://www.skytowner.com/explore/beautiful_soup_next_sibling_property
 
@@ -16,22 +17,6 @@ now = datetime.now() # current date and time
 tobe_added = now.strftime("%Y-%m-%d-%H-%M-%S")
 name= "medex_medicine_info_with_generic_url_" + str(tobe_added) +".json"
 json_object=[]
-    # header = [
-    #           "Generic Name",
-    #           "URL",
-    #           "Indications",
-    #           "Pharmacology",
-    #           "Dosage",
-    #           "Administration",
-    #           "Interaction",
-    #           "Contradictions",
-    #           "Side Effects",
-    #           "Pregnancy & Lactation",
-    #           "Precautions & Warning",
-    #           "Therapeutic Class",
-    #           "Storage Condtions"
-    #           ]
-    # thewriter.writerow(header)
 
 for p in range(1,page):
     num = random.randint(6, 10)
@@ -58,6 +43,38 @@ for p in range(1,page):
                     det = detail.text.strip()
                     data[head]=det
             json_object.append(data)
+            
+            b_link=link +'/brand-names'
+            time.sleep(7)
+            tables=pd.read_html(b_link)
+            file=tables[0]
+            time.sleep(7)
+            response = requests.get(b_link)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            all_trs = soup.findAll("tr",class_="brand-row")
+            record = []
+            generic =[]
+            generic_url =[]
+            gen_link=link
+            for lists in all_trs:
+                try:
+                    blink = lists['data-href']
+                    record.append(blink)
+                    generic.append(generic_name)
+                    gen_link.append(gen_link)
+                except:
+                    pass
+            file['Brand Url'] = record
+            file['Generic Name'] = generic
+            file['Generic Url'] = gen_link
+            file = file.fillna(0)
+            bname= "from_generics_to_brand_informations" + str(tobe_added) +".json"
+
+            file.to_csv('brand_informations.csv', mode='a', index=False, header=False)
+           # file.to_json(bname,orient='records')
+
+
+            
                            
 with open(name, "w") as outfile:
     outfile.write(json.dumps(json_object,indent=4))
