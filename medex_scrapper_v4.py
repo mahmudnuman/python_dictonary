@@ -49,7 +49,7 @@ for p in range(1,page):
         tables=pd.read_html(b_link)
         file=tables[0]
         time.sleep(7)
-        response = requests.get(b_link)
+        response = requests.get(b_link,headers=headers)
         soup = BeautifulSoup(response.content, 'html.parser')
         all_trs = soup.findAll("tr",class_="brand-row")
         record = []
