@@ -35,7 +35,6 @@ json_object=[]
 
 for p in range(1,page):
     num = random.randint(6, 10)
-    json_data=[]
     time.sleep(num)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
     url = "https://medex.com.bd/generics?page=" +str(p)
@@ -58,9 +57,7 @@ for p in range(1,page):
                     head = header.text.strip()
                     det = detail.text.strip()
                     data[head]=det
-            json_data.append(data)
-
-    json_object.append(json_data)
+            json_object.append(data)
                            
 with open(name, "w") as outfile:
     outfile.write(json.dumps(json_object,indent=4))
