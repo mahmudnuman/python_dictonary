@@ -44,33 +44,30 @@ for p in range(1,page):
                     data[head]=det
             json_object.append(data)
             
-            b_link=link +'/brand-names'
-            time.sleep(7)
-            tables=pd.read_html(b_link)
-            file=tables[0]
-            time.sleep(7)
-            response = requests.get(b_link)
-            soup = BeautifulSoup(response.content, 'html.parser')
-            all_trs = soup.findAll("tr",class_="brand-row")
-            record = []
-            generic =[]
-            generic_url =[]
-            gen_link=link
-            for lists in all_trs:
-                try:
-                    blink = lists['data-href']
-                    record.append(blink)
-                    generic.append(generic_name)
-                    gen_link.append(gen_link)
-                except:
-                    pass
-            file['Brand Url'] = record
-            file['Generic Name'] = generic
-            file['Generic Url'] = gen_link
-            file = file.fillna(0)
-            bname= "from_generics_to_brand_informations" + str(tobe_added) +".json"
+        b_link=link +'/brand-names'
+        time.sleep(7)
+        tables=pd.read_html(b_link)
+        file=tables[0]
+        time.sleep(7)
+        response = requests.get(b_link)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        all_trs = soup.findAll("tr",class_="brand-row")
+        record = []
+        generic =[]
+        generic_url =[]
+        gen_link=link
+        for lists in all_trs:
+            blink = lists['data-href']
+            record.append(blink)
+            generic.append(generic_name)
+            gen_link.append(gen_link)
+        file['Brand Url'] = record
+        file['Generic Name'] = generic
+        file['Generic Url'] = gen_link
+        file = file.fillna(0)
+        bname= "from_generics_to_brand_informations" + str(tobe_added) +".json"
 
-            file.to_csv('brand_informations.csv', mode='a', index=False, header=False)
+        file.to_csv('brand_informations.csv', mode='a', index=False, header=False)
            # file.to_json(bname,orient='records')
 
 
