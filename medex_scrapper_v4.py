@@ -56,14 +56,14 @@ for p in range(1,page):
         generic =[]
         generic_url =[]
         gen_link=link
-        for lists in all_trs:
-            blink = lists['data-href']
+        for tr in all_trs:
+            blink = tr['data-href']
             record.append(blink)
             generic.append(generic_name)
-            gen_link.append(gen_link)
+            generic_url.append(gen_link)
         file['Brand Url'] = record
         file['Generic Name'] = generic
-        file['Generic Url'] = gen_link
+        file['Generic Url'] = generic_url
         file = file.fillna(0)
         bname= "from_generics_to_brand_informations" + str(tobe_added) +".json"
 
