@@ -19,7 +19,7 @@ name= "medex_medicine_info_with_generic_url_" + str(tobe_added) +".json"
 json_object=[]
 
 for p in range(1,page):
-    num = random.randint(6, 10)
+    num = random.randint(6, 8)
     time.sleep(num)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
     url = "https://medex.com.bd/generics?page=" +str(p)
@@ -49,21 +49,25 @@ for p in range(1,page):
         tables=pd.read_html(b_link)
         file=tables[0]
         time.sleep(7)
-        response = requests.get(b_link,headers=headers)
-        soup = BeautifulSoup(response.content, 'html.parser')
-        all_trs = soup.findAll("tr",class_="brand-row")
+        bresponse = requests.get(b_link,headers=headers)
+        bsoup = BeautifulSoup(bresponse.content, 'html.parser')
+        all_trs = bsoup.findAll("tr",class_="brand-row")
         record = []
+        company = []
         generic =[]
         generic_url =[]
         gen_link=link
         for tr in all_trs:
             blink = tr['data-href']
+            bcompany = tr['data-company']
             record.append(blink)
+            company.append(bcompany)
             generic.append(generic_name)
             generic_url.append(gen_link)
         file['Brand Url'] = record
         file['Generic Name'] = generic
         file['Generic Url'] = generic_url
+        file['Company Id'] = company
         file = file.fillna(0)
         bname= "from_generics_to_brand_informations" + str(tobe_added) +".json"
 
